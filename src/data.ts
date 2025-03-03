@@ -174,6 +174,9 @@ export const stickers: string[] = [
   "./stickers/image1.png",
   "./stickers/image2.png",
   "./stickers/image3.png",
+  "./stickers/image4.png",
+  "./stickers/image5.png",
+  "./stickers/image6.png",
 ];
 
 // Background Gradients

@@ -7,7 +7,7 @@ const LoveYouBabudi: React.FC = () => {
     Array<{ text: string; color: string; scale: number }>
   >([]);
   const [currentGradient, setCurrentGradient] = useState<number>(1);
-  const [emojis, setEmojis] = useState<Array<{ id: number; emoji: string; x: number; y: number }>>([]);
+  const [emojis, setEmojis] = useState<Array<{ id: number; emoji: string; x: number; y: number; size: number }>>([]);
   const [hearts, setHearts] = useState<Array<{ id: number; x: number; y: number }>>([]);
   const [stickersList, setStickersList] = useState<Array<{ id: number; src: string; x: number; y: number }>>([]);
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
@@ -20,7 +20,7 @@ const LoveYouBabudi: React.FC = () => {
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.src = "/love-song.mp3"; // Ensure the file exists in public/
+        audioRef.current.src = "/love-song.mp3";
         audioRef.current.play().catch((e) => console.error("Audio error:", e));
       }
       setIsPlaying(!isPlaying);
@@ -48,17 +48,40 @@ const LoveYouBabudi: React.FC = () => {
         emoji: cuteEmojis[Math.floor(Math.random() * cuteEmojis.length)],
         x: e.clientX,
         y: e.clientY,
+        size: Math.random() * 1.5 + 1, // Random emoji sizes
       };
-      setEmojis((prev) => [...prev, newEmoji]);
+      setEmojis((prev) => [...prev.slice(-20), newEmoji]); // Keep emoji array optimized
 
-      // Remove old emojis after a while
       setTimeout(() => {
         setEmojis((prev) => prev.filter((emoji) => emoji.id !== newEmoji.id));
-      }, 2000);
+      }, 2500); // Increased duration before emoji disappears
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  // Generate background floating love emojis
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomX = Math.random() * window.innerWidth;
+      const randomY = Math.random() * window.innerHeight;
+      const newEmoji = {
+        id: Date.now(),
+        emoji: cuteEmojis[Math.floor(Math.random() * cuteEmojis.length)],
+        x: randomX,
+        y: randomY,
+        size: Math.random() * 2 + 1, // Random size variation
+      };
+
+      setEmojis((prev) => [...prev.slice(-30), newEmoji]); // Keep array optimized
+
+      setTimeout(() => {
+        setEmojis((prev) => prev.filter((emoji) => emoji.id !== newEmoji.id));
+      }, 5000);
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   // Handle click interactions (hearts, stickers, confetti)
@@ -66,14 +89,10 @@ const LoveYouBabudi: React.FC = () => {
     const x = e.clientX;
     const y = e.clientY;
 
-    // Add floating heart
     setHearts((prev) => [...prev, { id: Date.now(), x, y }]);
-
-    // Add random sticker
     const randomSticker = stickers[Math.floor(Math.random() * stickers.length)];
     setStickersList((prev) => [...prev, { id: Date.now(), src: randomSticker, x, y }]);
 
-    // Show confetti occasionally
     if (Math.random() > 0.7) setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 3000);
   };
@@ -82,7 +101,7 @@ const LoveYouBabudi: React.FC = () => {
   useEffect(() => {
     const messageInterval = setInterval(() => {
       setMessages([generateNewMessage()]);
-      setCurrentGradient((prev) => (prev % 5) + 1);
+      setCurrentGradient((prev) => (prev % 10) + 1);
     }, 3000);
 
     return () => clearInterval(messageInterval);
@@ -90,19 +109,16 @@ const LoveYouBabudi: React.FC = () => {
 
   return (
     <div className={`love-container bg-gradient-${currentGradient}`} onClick={handleClick}>
-      {/* Background Music */}
       <audio ref={audioRef} loop>
         <source src="/love-song.mp3" type="audio/mp3" />
       </audio>
 
-      {/* Audio Controls */}
       <div className="audio-controls">
         <button onClick={(e) => { e.stopPropagation(); toggleAudio(); }} className="audio-btn">
           {isPlaying ? "⏸️" : "▶️"}
         </button>
       </div>
 
-      {/* Love messages */}
       <div className="message-container">
         {messages.map((msg, index) => (
           <h1 key={index} className={`love-message ${msg.color}`} style={{ transform: `scale(${msg.scale})` }}>
@@ -113,32 +129,35 @@ const LoveYouBabudi: React.FC = () => {
 
       {/* Floating emojis following cursor */}
       {emojis.map((emoji) => (
-        <div key={emoji.id} className="floating-emoji" style={{ left: `${emoji.x}px`, top: `${emoji.y}px` }}>
+        <div
+          key={emoji.id}
+          className="floating-emoji"
+          style={{
+            left: `${emoji.x}px`,
+            top: `${emoji.y}px`,
+            fontSize: `${emoji.size}rem`,
+          }}
+        >
           {emoji.emoji}
         </div>
       ))}
 
-      {/* Floating hearts on click */}
       {hearts.map((heart) => (
         <div key={heart.id} className="floating-heart" style={{ left: `${heart.x}px`, top: `${heart.y}px` }}>
           ❤️
         </div>
       ))}
 
-      {/* Stickers on click */}
       {stickersList.map((sticker) => (
         <img key={sticker.id} src={sticker.src} alt="sticker" className="sticker" style={{ left: `${sticker.x}px`, top: `${sticker.y}px` }} />
       ))}
 
-      {/* Confetti */}
       {showConfetti && <div className="confetti-container">
-        {/* Generate confetti pieces dynamically */}
         {Array.from({ length: 30 }).map((_, i) => (
           <div key={i} className="confetti-piece" style={{ left: `${Math.random() * 100}%` }} />
         ))}
       </div>}
 
-      {/* Click Hint */}
       <div className="click-hint">Click or move your mouse for magic! ✨💖</div>
     </div>
   );
