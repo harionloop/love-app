@@ -20,7 +20,7 @@ const LoveYouBabudi: React.FC = () => {
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.src = "/love-song.mp3";
+        audioRef.current.src = "/love.mp3";
         audioRef.current.play().catch((e) => console.error("Audio error:", e));
       }
       setIsPlaying(!isPlaying);
@@ -110,7 +110,7 @@ const LoveYouBabudi: React.FC = () => {
   return (
     <div className={`love-container bg-gradient-${currentGradient}`} onClick={handleClick}>
       <audio ref={audioRef} loop>
-        <source src="/love-song.mp3" type="audio/mp3" />
+        <source src="/love.mp3" type="audio/mp3" />
       </audio>
 
       <div className="audio-controls">
