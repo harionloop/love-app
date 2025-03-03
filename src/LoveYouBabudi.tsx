@@ -71,7 +71,7 @@ const LoveYouBabudi: React.FC = () => {
         emoji: cuteEmojis[Math.floor(Math.random() * cuteEmojis.length)],
         x: randomX,
         y: randomY,
-        size: Math.random() * 2 + 1, // Random size variation
+        size: Math.random() * 5 + 1, // Random size variation
       };
 
       setEmojis((prev) => [...prev.slice(-30), newEmoji]); // Keep array optimized
