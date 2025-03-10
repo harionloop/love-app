@@ -1,5 +1,3 @@
-import { SweetWord, SweetSentence, Emoji } from "./types";
-
 // Sweet Words Collection
 export const sweetWords: string[] = [
   // English Sweet Words
@@ -177,6 +175,12 @@ export const stickers: string[] = [
   "./stickers/image4.png",
   "./stickers/image5.png",
   "./stickers/image6.png",
+  "./stickers/image7.png",
+  "./stickers/image8.png",
+  "./stickers/image9.png",
+  "./stickers/image10.png",
+  "./stickers/image11.png",
+  "./stickers/image12.png",
 ];
 
 // Background Gradients
