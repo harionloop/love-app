@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/your-repo-name/static/css/main.1183fc3c.css",
-    "main.js": "/your-repo-name/static/js/main.0be5ae6b.js",
-    "index.html": "/your-repo-name/index.html",
-    "main.1183fc3c.css.map": "/your-repo-name/static/css/main.1183fc3c.css.map",
-    "main.0be5ae6b.js.map": "/your-repo-name/static/js/main.0be5ae6b.js.map"
+    "main.css": "/love-app/static/css/main.1183fc3c.css",
+    "main.js": "/love-app/static/js/main.0be5ae6b.js",
+    "index.html": "/love-app/index.html",
+    "main.1183fc3c.css.map": "/love-app/static/css/main.1183fc3c.css.map",
+    "main.0be5ae6b.js.map": "/love-app/static/js/main.0be5ae6b.js.map"
   },
   "entrypoints": [
     "static/css/main.1183fc3c.css",
